@@ -13,7 +13,7 @@ namespace Kenneth {
     public:
         void print();//output the complex number
         void conjugate();
-        void magnitude();
+        void mod();
     public:
         //We will implement the some useful operator
         ComplexNumber& operator=(const ComplexNumber& c);
@@ -49,11 +49,11 @@ namespace Kenneth {
         _image = -1 * _image;
     }
     template<typename T>
-    void ComplexNumber<T>::magnitude() {
-        double mag;
-        mag = _real * _real + _image * _image;
-        std::cout << "The magnidue of the given complex number is "
-            << mag<<"\n";
+    void ComplexNumber<T>::mod() {
+        double mod;
+        mod = _real * _real + _image * _image;
+        std::cout << "The modulus of the given complex number is "
+            << mod<<"\n";
     }
 
     template<typename T>
