@@ -79,7 +79,7 @@ int main() {
 	dt = (tf - t0) / (double)(n);
 	int j = 0;
 	val = rungekutta(t0, x, dt);
-	//Open dataes to write output
+	//Open data to write output
 	ofstream data("Data.dat");
 	data << x[0] << "     " << x[1] << "     " << x[2] << "\n";
 
