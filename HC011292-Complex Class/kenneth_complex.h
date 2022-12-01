@@ -2,6 +2,9 @@
 #define KENNETH_COMPLEX_H
 #pragma once
 #include <iostream>
+#include <cmath> //just for calculating the argument of complex number
+#include <string>
+#include <sstream>
 namespace Kenneth {
     template<typename T>
     class ComplexNumber {
@@ -9,11 +12,14 @@ namespace Kenneth {
         ComplexNumber();//Default construct function
         ComplexNumber(T real, T image = 0);
         ~ComplexNumber();
-
     public:
         void print();//output the complex number
-        void conjugate();
-        void mod();
+        double mod();
+        double arg();
+        double CtoP_r(Kenneth::ComplexNumber<T>& c);
+        double CtoP_arg(Kenneth::ComplexNumber<T>& c);
+        double PtoC_x(double r,double arg);
+        double PtoC_y(double r,double arg);
     public:
         //We will implement the some useful operator
         ComplexNumber& operator=(const ComplexNumber& c);
@@ -21,12 +27,14 @@ namespace Kenneth {
         ComplexNumber& operator-(const ComplexNumber& c);
         ComplexNumber& operator*(const ComplexNumber& c);
         ComplexNumber& operator/(const ComplexNumber& c);
-
+        ComplexNumber& conjugate(const Kenneth::ComplexNumber<T>& c);
     protected:
         T _real;
         T _image;
+        T _r;
+        T _theta;
+        double com_mod;
     };
-
     template<typename T>
     ComplexNumber<T>::ComplexNumber() {
         _real = 0;
@@ -42,18 +50,75 @@ namespace Kenneth {
     template<typename T>
     ComplexNumber<T>::~ComplexNumber() {
     }
+    template<typename T>
+    double ComplexNumber<T>::mod() {
+        double com_mod = _real * _real + _image * _image;
+        return com_mod;
+    }
 
     template<typename T>
-    void ComplexNumber<T>::conjugate() {
-        _real = _real;
-        _image = -1 * _image;
+    double ComplexNumber<T>::arg() {
+        double arg = 0;
+        if (_real > 0) {
+            arg = atan(_image / _real);
+        }
+        else if (_real < 0 && _image >= 0) {
+            arg = atan(_image / _real) + atan(1) * 4; // atan(1)*4 is pi
+        }
+        else if (_real < 0 && _image < 0) {
+            arg = atan(_image / _real) - atan(1) * 4;
+        }
+        else if (_real = 0 && _image > 0) {
+            arg = atan(1) * 2;
+        }
+        else if (_real = 0 && _image < 0) {
+            arg = atan(1) * -2;
+        }
+        else {
+            std::cout << "The argument is undefined" << std::endl;
+        }
+        return arg;
     }
     template<typename T>
-    void ComplexNumber<T>::mod() {
-        double mod;
-        mod = _real * _real + _image * _image;
-        std::cout << "The modulus of the given complex number is "
-            << mod<<"\n";
+    double ComplexNumber<T>::CtoP_r(Kenneth::ComplexNumber<T>& c) {
+        double r = sqrt(c._real * c._real + c._image * c._image);
+        return r;
+    }
+
+    template<typename T>
+    double ComplexNumber<T>::CtoP_arg(Kenneth::ComplexNumber<T>& c) {
+        double arg;
+        if (c._real > 0) {
+            arg = atan(c._image / c._real);
+        }
+        else if (c._real < 0 && c._image >= 0) {
+            arg = atan(c._image / c._real) + atan(1) * 4; // atan(1)*4 is pi
+        }
+        else if (c._real < 0 && c._image < 0) {
+            arg = atan(c._image / c._real) - atan(1) * 4;
+        }
+        else if (c._real = 0 && c._image > 0) {
+            arg = atan(1) * 2;
+        }
+        else if (c._real = 0 && c._image < 0) {
+            arg = atan(1) * -2;
+        }
+        else {
+            std::cout << "The argument is undefined" << std::endl;
+        }
+        return arg;
+    }
+
+    template<typename T>
+    double ComplexNumber<T>::PtoC_x(double r, double arg) {
+        double x = r * cos(arg);
+        return x;
+    }
+
+    template<typename T>
+    double ComplexNumber<T>::PtoC_y(double r, double arg) {
+        double y = r * sin(arg);
+        return y;
     }
 
     template<typename T>
@@ -66,15 +131,16 @@ namespace Kenneth {
             std::cout << "-" << abs(_image) << "i";
         }
         std::cout << "\n";
-        std::cout << "The real part is " << _real<<"\n";
+        std::cout << "The real part is " << _real << "\n";
         std::cout << "The imaginary part is " << _image << "\n";
     }
 
     template<typename T>
     ComplexNumber<T>& ComplexNumber<T>::operator=(const ComplexNumber& c) {
-        _real = c._real;
-        _image = c._image;
-        return *this;
+        ComplexNumber<T> temp;
+        temp._real = c._real;
+        temp._image = c._image;
+        return temp;
     }
 
     template<typename T>
@@ -103,5 +169,12 @@ namespace Kenneth {
         temp._image = -1 * (_real * c._image - _image * c._real) / (c._real * c._real + c._image * c._image);
         return temp;
     }
+    template<typename T>
+    ComplexNumber<T>& ComplexNumber<T>::conjugate(const Kenneth::ComplexNumber<T>& c) {
+        ComplexNumber<T> temp;
+        temp._real = c._real;
+        temp._image = -1 * c._image;
+        return temp;
+    };
 }
 #endif /* KENNETH_COMPLEX_H */
