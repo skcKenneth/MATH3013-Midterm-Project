@@ -14,12 +14,12 @@ namespace Kenneth {
         ~ComplexNumber();
     public:
         void print();//output the complex number
-        double mod();
-        double arg();
-        double CtoP_r(Kenneth::ComplexNumber<T>& c);
-        double CtoP_arg(Kenneth::ComplexNumber<T>& c);
-        double PtoC_x(double r,double arg);
-        double PtoC_y(double r,double arg);
+        double mod(); //Finding the modules
+        double arg(); //Finding the argument
+        double CtoP_r(Kenneth::ComplexNumber<T>& c); // The r of polar form
+        double CtoP_arg(Kenneth::ComplexNumber<T>& c); // The argument of polar form
+        double PtoC_x(double r,double arg); // x coordinate
+        double PtoC_y(double r,double arg); // y coordinate
     public:
         //We will implement the some useful operator
         ComplexNumber& operator=(const ComplexNumber& c);
@@ -27,13 +27,10 @@ namespace Kenneth {
         ComplexNumber& operator-(const ComplexNumber& c);
         ComplexNumber& operator*(const ComplexNumber& c);
         ComplexNumber& operator/(const ComplexNumber& c);
-        ComplexNumber& conjugate(const Kenneth::ComplexNumber<T>& c);
+        ComplexNumber& conjugate(const Kenneth::ComplexNumber<T>& c); //Conjugate
     protected:
         T _real;
         T _image;
-        T _r;
-        T _theta;
-        double com_mod;
     };
     template<typename T>
     ComplexNumber<T>::ComplexNumber() {
